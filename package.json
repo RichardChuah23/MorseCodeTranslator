@@ -1,0 +1,24 @@
+{
+  "name": "intruder",
+  "version": "1.0.0",
+  "description": "assignment 2-intruder ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FIT3140-S1-2017/assignment-2-team28.git"
+  },
+  "author": "Richard&Peiling",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FIT3140-S1-2017/assignment-2-team28/issues"
+  },
+  "homepage": "https://github.com/FIT3140-S1-2017/assignment-2-team28#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "firebase-admin": "^4.1.4",
+    "johnny-five": "^0.10.6"
+  }
+}
