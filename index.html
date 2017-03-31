@@ -140,8 +140,10 @@
                 <td class="column2"><span id="shortmotionlabel">0</span></td>
             </tr>
         </table>
+
         
-        <script type="text/javascript">  
+        <script  type="text/javascript">  
+            /**
             var socket = io();
             socket.emit('motion');
              
@@ -154,7 +156,7 @@
                 };
             };
             
-            /**
+            
             // Turning motion on and off
             function motionCount() { 
                 if(document.getElementById("motion").checked) {
@@ -186,11 +188,9 @@
                     socket.emit('toggle',{description:x});
                 };
             };
-            */
+           */
         </script>  
-
-
-
+        
         <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
         <script>
         // Initialize Firebase
@@ -203,10 +203,10 @@
             messagingSenderId: "401737524134"
         };
         firebase.initializeApp(config);
-        </script
+        </script>
 
 
-        <script src="./firebaseWebApi.js"></script>
+        <script src="./firebaseWebApi.js">  </script>
 
     </body>
 </html>

@@ -2,6 +2,11 @@ function Fit3140() {
   this.checkSetup();
   this.initFirebase();
   this.loadMessages();
+
+
+
+
+
 }
 
   Fit3140.prototype.initFirebase = function () {
@@ -19,22 +24,22 @@ function Fit3140() {
     // Loads the last 50 messages and listen for new ones.
     var setMessage = function (data) {
       var val = data.val();
-      this.displayMessage(val.action, val.id, val.time, val.type);
+      this.displayMessage(val.id, val.longmotion, val.motion, val.shortmotion, val.type);
     }.bind(this);
     this.messagesRef.limitToLast(50).on('child_added', setMessage);
     this.messagesRef.limitToLast(50).on('child_changed', setMessage);
   };
-
-  /** 
+  
 
   // Saves a new message on the Firebase DB.
   Fit3140.prototype.saveMessage = function () {
     // Add a new message entry to the Firebase Database.
-    this.messagesRef.push({
-      action: 'off',
-      id: 2,
-      time: 123456, // you can use Date.now()
-      type: 'motion'
+    this.messagesRef.update({
+      id: '2',
+      longmotion: 10,
+      motion: 10, // you can use Date.now()
+      shortmotion: 10,
+      type: "motion"
     }).then(function () {
       console.log('Done')
     }.bind(this)).catch(function (error) {
@@ -42,11 +47,17 @@ function Fit3140() {
     });
   };
 
-  Fit3140.prototype.displayMessage = function (action, id, time, type) {
-    document.getElementById('msg').innerText = action + '  ' + time + '  ' + type;
+
+
+  Fit3140.prototype.displayMessage = function (id, longmotion, motion, shortmotion, type) {
+
+    document.getElementById('motionlabel').innerText = motion;
+    document.getElementById('longmotionlabel').innerHTML = longmotion;
+    document.getElementById('shortmotionlabel').innerHTML = shortmotion;
+
   };
 
-*/
+
 
   // Checks that the Firebase SDK has been correctly setup and configured.
   Fit3140.prototype.checkSetup = function () {

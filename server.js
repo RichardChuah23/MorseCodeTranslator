@@ -19,6 +19,8 @@ ref.on("value", function(snapshot) {   //this callback will be invoked with each
 });
 
 
+
+
 var express = require('express');  
 var app = express();  
 var httpServer = require("http").createServer(app);  
@@ -29,6 +31,18 @@ longmotioncounter = 0;
 shortmotioncounter = 0;
 motioncounter = 0;
 motionid = 0; 
+
+
+
+ref.push({
+    id:motionid,
+    type:'motion',
+    motion: motioncounter,  
+    longmotion: longmotioncounter,
+    shortmotion: shortmotioncounter,
+
+})
+
 
 app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {  
@@ -70,7 +84,7 @@ motion.on("motionend", function(){
         console.log("This is a long motion"); 
         longmotioncounter++;
         
-        ref.update({
+        ref.push({
             id:motionid,
             type:'motion',
             motion: motioncounter,  
@@ -84,7 +98,7 @@ motion.on("motionend", function(){
         console.log("This is a short motion");
         shortmotioncounter++;
 
-        ref.update({
+        ref.push({
             id:motionid,
             type:'motion',
             motion: motioncounter,  
