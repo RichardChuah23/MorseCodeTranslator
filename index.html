@@ -143,6 +143,40 @@
 
         
         <script  type="text/javascript">  
+
+
+
+
+        //Turn Led On off 
+        function LEDFunction(){
+            if(document.getElementById("led").checked){
+                console.log("Push LEDon")
+
+
+            firebase.database().ref("/motionSensorData").push({
+                led: "on",
+                motion: document.getElementById('motionlabel').innerText,
+                longmotion: document.getElementById('longmotionlabel').innerText,
+                shortmotion: document.getElementById('shortmotionlabel').innerText,
+                
+            });
+
+            }else{ 
+                firebase.database().ref("/motionSensorData").push({
+                led: "off",
+                motion: document.getElementById('motionlabel').innerText,
+                longmotion: document.getElementById('longmotionlabel').innerText,
+                shortmotion: document.getElementById('shortmotionlabel').innerText,
+            });
+            };
+        };
+        
+        
+
+
+
+
+
             /**
             var socket = io();
             socket.emit('motion');

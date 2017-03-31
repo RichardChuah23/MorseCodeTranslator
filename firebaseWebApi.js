@@ -3,10 +3,6 @@ function Fit3140() {
   this.initFirebase();
   this.loadMessages();
 
-
-
-
-
 }
 
   Fit3140.prototype.initFirebase = function () {
@@ -24,7 +20,7 @@ function Fit3140() {
     // Loads the last 50 messages and listen for new ones.
     var setMessage = function (data) {
       var val = data.val();
-      this.displayMessage(val.id, val.longmotion, val.motion, val.shortmotion, val.type);
+      this.displayMessage(val.id, val.longmotion, val.motion, val.shortmotion, val.led);
     }.bind(this);
     this.messagesRef.limitToLast(50).on('child_added', setMessage);
     this.messagesRef.limitToLast(50).on('child_changed', setMessage);
@@ -39,7 +35,7 @@ function Fit3140() {
       longmotion: 10,
       motion: 10, // you can use Date.now()
       shortmotion: 10,
-      type: "motion"
+      led: "off"
     }).then(function () {
       console.log('Done')
     }.bind(this)).catch(function (error) {
@@ -49,9 +45,9 @@ function Fit3140() {
 
 
 
-  Fit3140.prototype.displayMessage = function (id, longmotion, motion, shortmotion, type) {
+  Fit3140.prototype.displayMessage = function (id, longmotion, motion, shortmotion, led) {
 
-    document.getElementById('motionlabel').innerText = motion;
+    document.getElementById('motionlabel').innerHTML = motion;
     document.getElementById('longmotionlabel').innerHTML = longmotion;
     document.getElementById('shortmotionlabel').innerHTML = shortmotion;
 

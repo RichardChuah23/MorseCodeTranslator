@@ -30,13 +30,11 @@ var port = 3000;
 longmotioncounter = 0;
 shortmotioncounter = 0;
 motioncounter = 0;
-motionid = 0; 
 
 
 
 ref.push({
-    id:motionid,
-    type:'motion',
+    led:'off',
     motion: motioncounter,  
     longmotion: longmotioncounter,
     shortmotion: shortmotioncounter,
@@ -85,11 +83,11 @@ motion.on("motionend", function(){
         longmotioncounter++;
         
         ref.push({
-            id:motionid,
-            type:'motion',
+            led:'off',
             motion: motioncounter,  
             longmotion: longmotioncounter,
             shortmotion: shortmotioncounter,
+            
         
     });
         
@@ -97,10 +95,8 @@ motion.on("motionend", function(){
     }else {
         console.log("This is a short motion");
         shortmotioncounter++;
-
         ref.push({
-            id:motionid,
-            type:'motion',
+            led:'off',
             motion: motioncounter,  
             longmotion: longmotioncounter,
             shortmotion: shortmotioncounter,
