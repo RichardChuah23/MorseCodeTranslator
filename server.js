@@ -6,7 +6,7 @@ var serviceAccount = require("./serviceAccountKey.json");
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://assignment-2-intruder.firebaseio.com/"  // IMPORTANT: repalce the url with yours 
+  databaseURL: "https://assignment-2-d4946.firebaseio.com/"  // IMPORTANT: repalce the url with yours 
 });
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules

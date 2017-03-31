@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Control Panel</title>
+    </head>
+
+    <style>
+        body {
+            width: auto;
+            height: auto;
+        }
+        
+        .header {
+            width: auto;
+            background-color: rebeccapurple;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        h3 {
+            text-align: center;
+        }
+        
+        /** Style for the control panel **/
+        table {
+            border-collapse: collapse;
+            border: 1px solid gainsboro;
+            width: 50%;
+            margin-bottom: auto;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+        }
+
+        tr, td {
+            text-align: left;
+            font-weight: bold;
+            padding: 10px;
+            height: 25px;
+            width: auto;
+        }
+        
+        .column1 {
+            width: auto;
+            text-indent: 10px;
+        }
+        
+        .column2 {
+            width: auto;
+            text-align: center;
+        }
+        
+        /** Toggle switch **/
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 50px;
+          height: 24px;
+        }
+
+        .switch input {display:none;}
+
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: gainsboro;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 16px;
+          width: 16px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          -webkit-transition: .4s;
+          transition: .4s;
+        }
+
+        input:checked + .slider {
+          background-color: mediumpurple;
+        }
+
+        input:checked + .slider:before {
+          -webkit-transform: translateX(26px);
+          -ms-transform: translateX(26px);
+          transform: translateX(26px);
+        }
+    </style>
+
+    
+    <body>
+        <div class="header">
+            <h1>IoT Control Panel</h1>
+        </div>
+        
+        <h3>Control Panel</h3>
+        
+        <table>
+            <tr>
+                <td class="column1">Switch LED On/Off</td>
+                <td class="column2">
+                    <label class="switch">
+                        <input type="checkbox" onclick="LEDFunction()" id="led">
+                        <div  class="slider round"></div>
+                    </label>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column1">Switch Motion Sensor On/Off</td>
+                <td class="column2">
+                    <label class="switch">
+                        <input type="checkbox" onclick="motionCount()" id="motion">
+                            <div class="slider round"></div>
+                    </label>
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="column1">Motion Detected</td>
+                <td class="column2"><span id="motionlabel">0</span></td>
+            </tr>
+
+            <tr>
+                <td class="column1">Long Motions</td>
+                <td class="column2"><span id="longmotionlabel">0</span></td>
+            </tr>
+
+            <tr>
+                <td class="column1">Short Motions</td>
+                <td class="column2"><span id="shortmotionlabel">0</span></td>
+            </tr>
+        </table>
+        
+        <script type="text/javascript">  
+            var socket = io();
+            socket.emit('motion');
+             
+            // Turning led on and off
+            function LEDFunction(){
+                if(document.getElementById("led").checked){
+                    console.log('LED ON');
+                }else{
+                  console.log('LED OFF');
+                };
+            };
+            
+            /**
+            // Turning motion on and off
+            function motionCount() { 
+                if(document.getElementById("motion").checked) {
+                    var x = 1 ; 
+                    socket.emit('toggle', {description: x});
+                    
+                    // Update motion count
+                    socket.on('motionCounter', function(data) {
+                        var tmp = data.description;
+                        var display = document.getElementById("motionlabel");
+                        display.innerHTML = tmp;
+                    });
+                    
+                    // Updating the counter for short motion
+                    socket.on('shortmotionCounter',function(data) {
+                        var tmp = data.description;
+                        var display = document.getElementById("shortmotionlabel");
+                        display.innerHTML = tmp; 
+                    });
+                    
+                    // Updating the counter for long motion
+                    socket.on('longmotionCounter',function(data){
+                        var tmp = data.description;
+                        var display = document.getElementById("longmotionlabel");
+                        display.innerHTML = tmp;
+                    });
+                }else{
+                    var x = 0;
+                    socket.emit('toggle',{description:x});
+                };
+            };
+            */
+        </script>  
+
+
+
+        <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+        <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyA84aCpSRhPIYCgaTe7unLjcSqhtlYEOfg",
+            authDomain: "assignment-2-d4946.firebaseapp.com",
+            databaseURL: "https://assignment-2-d4946.firebaseio.com",
+            projectId: "assignment-2-d4946",
+            storageBucket: "assignment-2-d4946.appspot.com",
+            messagingSenderId: "401737524134"
+        };
+        firebase.initializeApp(config);
+        </script
+
+
+        <script src="./firebaseWebApi.js"></script>
+
+    </body>
+</html>
