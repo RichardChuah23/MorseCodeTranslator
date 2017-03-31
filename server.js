@@ -13,11 +13,12 @@ admin.initializeApp({
 var db = admin.database();
 var ref = db.ref("/motionSensorData"); // channel name
 ref.on("value", function(snapshot) {   //this callback will be invoked with each new object
-  console.log(snapshot.val());         // How to retrive the new added object
+  //console.log(snapshot.val());         // How to retrive the new added object
 }, function (errorObject) {             // if error
   console.log("The read failed: " + errorObject.code);
 });
 
+var refmotion = db.ref("/motionData"); // for motion
 
 
 
@@ -30,7 +31,11 @@ var port = 3000;
 longmotioncounter = 0;
 shortmotioncounter = 0;
 motioncounter = 0;
+toggle = 0;
 
+refmotion.update({
+    motion:"off",
+})
 
 
 ref.push({
@@ -40,6 +45,7 @@ ref.push({
     shortmotion: shortmotioncounter,
 
 })
+
 
 
 app.use(express.static(__dirname + '/public'));
@@ -64,47 +70,89 @@ board.on("ready", function() {
     console.log('Motion connected');
 
 
-motion.on("motionstart", function() {
-        console.log("Motion start");
-        start = new Date();
-        });
-        
-
-motion.on("motionend", function(){
-    console.log("Motion ended");
-    end = new Date();    
-    sec = (end-start)*(0.001);
-    sec = Math.round(sec*10)/10 ;
-    console.log(sec);
-    motioncounter++;
-
-    if(sec > 7) {
-        console.log("This is a long motion"); 
-        longmotioncounter++;
-        
-        ref.push({
-            led:'off',
-            motion: motioncounter,  
-            longmotion: longmotioncounter,
-            shortmotion: shortmotioncounter,
+    motion.on("motionstart", function() {
+            console.log("Motion start");
+            start = new Date();
+            });
             
+
+    motion.on("motionend", function(){
+        console.log("Motion ended");
+        end = new Date();    
+        sec = (end-start)*(0.001);
+        sec = Math.round(sec*10)/10 ;
+        console.log(sec);
+
+        if(toggle==1){ 
+            motioncounter++;
+        };
+    
+        if(sec > 7) {
+            console.log("This is a long motion"); 
+
+            if(toggle==1){ 
+                longmotioncounter++;
         
+                ref.push({
+                    motion: motioncounter,  
+                    longmotion: longmotioncounter,
+                    shortmotion: shortmotioncounter,
+            });
+            }
+            
+            
+        }else {
+            console.log("This is a short motion");
+
+            if(toggle ==1) { 
+            shortmotioncounter++;
+            ref.push({
+
+                motion: motioncounter,  
+                longmotion: longmotioncounter,
+                shortmotion: shortmotioncounter,
+            
+        });
+            };
+            
+        }
     });
+
+
+    //Led On off 
+    var refled = db.ref("/ledData"); // channel name
+    refled.on("value", function(snapshot) {   //this callback will be invoked with each new object
+    
+    
+       var key  = snapshot.val().led;
+
+        if(key == "on") { 
+            led.on(); 
+        }else{ 
+            led.off();
+        }; 
         
-        
-    }else {
-        console.log("This is a short motion");
-        shortmotioncounter++;
-        ref.push({
-            led:'off',
-            motion: motioncounter,  
-            longmotion: longmotioncounter,
-            shortmotion: shortmotioncounter,
-        
+        }, function (errorObject) {             // if error
+        console.log("The read failed: " + errorObject.code);
     });
+
+    //motion On off 
+    
+    refmotion.on("value", function(snapshot) {   //this callback will be invoked with each new object
+    
+       var key  = snapshot.val().motion;
+
+        if(key == "on") { 
+            toggle = 1;
+            console.log("change toogle to 1");
+        }else{
+            toggle = 0;
+        }; 
         
-    }
-});
+        }, function (errorObject) {             // if error
+        console.log("The read failed: " + errorObject.code);
+    });
+
 
 }); 
 

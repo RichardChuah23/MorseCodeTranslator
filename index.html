@@ -153,24 +153,36 @@
                 console.log("Push LEDon")
 
 
-            firebase.database().ref("/motionSensorData").push({
+            firebase.database().ref("/ledData").update({
                 led: "on",
-                motion: document.getElementById('motionlabel').innerText,
-                longmotion: document.getElementById('longmotionlabel').innerText,
-                shortmotion: document.getElementById('shortmotionlabel').innerText,
                 
             });
 
             }else{ 
-                firebase.database().ref("/motionSensorData").push({
+                firebase.database().ref("/ledData").update({
                 led: "off",
-                motion: document.getElementById('motionlabel').innerText,
-                longmotion: document.getElementById('longmotionlabel').innerText,
-                shortmotion: document.getElementById('shortmotionlabel').innerText,
+
             });
             };
         };
         
+        //Turn Motion On off
+        function motionCount(){
+            if(document.getElementById("motion").checked){
+                console.log("Push motion on")
+
+            firebase.database().ref("/motionData").update({
+                motion: "on",
+                
+            });
+
+            }else{ 
+                firebase.database().ref("/motionData").update({
+                motion: "off",
+
+            });
+            };
+        };
         
 
 

@@ -20,7 +20,7 @@ function Fit3140() {
     // Loads the last 50 messages and listen for new ones.
     var setMessage = function (data) {
       var val = data.val();
-      this.displayMessage(val.id, val.longmotion, val.motion, val.shortmotion, val.led);
+      this.displayMessage( val.longmotion, val.motion, val.shortmotion);
     }.bind(this);
     this.messagesRef.limitToLast(50).on('child_added', setMessage);
     this.messagesRef.limitToLast(50).on('child_changed', setMessage);
@@ -45,7 +45,7 @@ function Fit3140() {
 
 
 
-  Fit3140.prototype.displayMessage = function (id, longmotion, motion, shortmotion, led) {
+  Fit3140.prototype.displayMessage = function ( longmotion, motion, shortmotion, led) {
 
     document.getElementById('motionlabel').innerHTML = motion;
     document.getElementById('longmotionlabel').innerHTML = longmotion;
