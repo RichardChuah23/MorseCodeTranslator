@@ -12,14 +12,9 @@ admin.initializeApp({
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 var db = admin.database();
 var ref = db.ref("/motionSensorData"); // channel name
-ref.on("value", function(snapshot) {   //this callback will be invoked with each new object
-  //console.log(snapshot.val());         // How to retrive the new added object
-}, function (errorObject) {             // if error
-  console.log("The read failed: " + errorObject.code);
-});
-
 var refmotion = db.ref("/motionData"); // for motion
 var refreset = db.ref("/resetData"); // for motion
+var refled = db.ref("/ledData"); // channel name
 
 
 
@@ -29,12 +24,38 @@ var httpServer = require("http").createServer(app);
 var five = require("johnny-five");  
 var board = new five.Board();
 var port = 3000; 
-longmotioncounter = 0;
-shortmotioncounter = 0;
-motioncounter = 0;
-intrudercounter = 0;
-toggle = 0;
+
+
+motioncounter = 0 ;
+longmotioncounter = 0; 
+shortmotioncounter = 0; 
+intrudercounter = 0 ; 
+
+
+
+ref.on('child_added', function(snapshot) {
+      motioncounter = snapshot.val().motion; 
+      longmotioncounter = snapshot.val().longmotion; 
+      shortmotion = snapshot.val().shortmotion; 
+      intrudercounter = snapshot.val().intrudermotion; 
+});
+
+
+
+refmotion.on("value", function(snapshot) {   //this callback will be invoked with each new object
+
+    var key  = snapshot.val().motion;
+    toggle = key; 
+    
+    }, function (errorObject) {             // if error
+    console.log("The read failed: " + errorObject.code);
+});
+
+
 b = []  //array to store the list of motion. to find intruder
+
+
+
 
 refmotion.update({
     motion:"off",
@@ -45,15 +66,16 @@ refreset.update({
 })
 
 
+/** 
 ref.push({
-    led:'off',
-    motion: motioncounter,  
-    longmotion: longmotioncounter,
-    shortmotion: shortmotioncounter,
-    intrudermotion: intrudercounter,
 
-})
+        motion: motioncounter,  
+        longmotion: longmotioncounter,
+        shortmotion: shortmotioncounter,
+        intrudermotion: intrudercounter,
 
+    });
+    */
 
 
 app.use(express.static(__dirname + '/public'));
@@ -144,7 +166,7 @@ board.on("ready", function() {
 
 
     //Led On off 
-    var refled = db.ref("/ledData"); // channel name
+    
     refled.on("value", function(snapshot) {   //this callback will be invoked with each new object
     
     
@@ -186,7 +208,7 @@ board.on("ready", function() {
 
         if(key == "true") { 
             reset = 1;
-        };
+        
         
         ref.remove();
 
@@ -202,6 +224,8 @@ board.on("ready", function() {
         refreset.update({
                 reset: "false" ,
         });
+
+        };
          
 
         }, function (errorObject) {             // if error

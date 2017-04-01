@@ -29,7 +29,7 @@ function Fit3140() {
 
   // Saves a new message on the Firebase DB.
   Fit3140.prototype.saveMessage = function () {
-    // Add a new message entry to the Firebase Database.
+    // Add a new message entry to the Firebasse Database.
     this.messagesRef.update({
       id: '2',
       longmotion: 10,
@@ -45,7 +45,7 @@ function Fit3140() {
 
 
 
-  Fit3140.prototype.displayMessage = function ( longmotion, motion, shortmotion, intrudermotion) {
+  Fit3140.prototype.displayMessage = function ( longmotion, motion, shortmotion, intrudermotion){ 
 
     document.getElementById('motionlabel').innerHTML = motion;
     document.getElementById('longmotionlabel').innerHTML = longmotion;
