@@ -19,6 +19,7 @@ ref.on("value", function(snapshot) {   //this callback will be invoked with each
 });
 
 var refmotion = db.ref("/motionData"); // for motion
+var refreset = db.ref("/resetData"); // for motion
 
 
 
@@ -31,10 +32,15 @@ var port = 3000;
 longmotioncounter = 0;
 shortmotioncounter = 0;
 motioncounter = 0;
+intrudercounter = 0;
 toggle = 0;
 
 refmotion.update({
     motion:"off",
+})
+
+refreset.update({
+    reset:"false",
 })
 
 
@@ -43,6 +49,7 @@ ref.push({
     motion: motioncounter,  
     longmotion: longmotioncounter,
     shortmotion: shortmotioncounter,
+    intrudermotion: intrudercounter,
 
 })
 
@@ -152,6 +159,40 @@ board.on("ready", function() {
         }, function (errorObject) {             // if error
         console.log("The read failed: " + errorObject.code);
     });
+
+
+
+    //Reset clicked 
+    refreset.on("value", function(snapshot) {   //this callback will be invoked with each new object
+    
+       var key  = snapshot.val().reset;
+
+        if(key == "true") { 
+            reset = 1;
+        };
+        
+        ref.remove();
+
+        ref.push({
+            led:'off',
+            motion: motioncounter=0,  
+            longmotion: longmotioncounter=0,
+            shortmotion: shortmotioncounter=0,
+            intrudermotion: intrudercounter=0,
+
+         })
+
+        refreset.update({
+                reset: "false" ,
+        });
+         
+
+        }, function (errorObject) {             // if error
+        console.log("The read failed: " + errorObject.code);
+    });
+
+
+    
 
 
 }); 
