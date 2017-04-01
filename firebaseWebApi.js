@@ -51,8 +51,7 @@ function Fit3140() {
     document.getElementById('longmotionlabel').innerHTML = longmotion;
     document.getElementById('shortmotionlabel').innerHTML = shortmotion;
     document.getElementById('intrudersmotionlabel').innerHTML = intrudermotion;
-    
-
+  
   };
 
 

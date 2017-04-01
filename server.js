@@ -34,6 +34,7 @@ shortmotioncounter = 0;
 motioncounter = 0;
 intrudercounter = 0;
 toggle = 0;
+b = []  //array to store the list of motion. to find intruder
 
 refmotion.update({
     motion:"off",
@@ -76,13 +77,11 @@ board.on("ready", function() {
     motion = new five.Motion(2);
     console.log('Motion connected');
 
-
     motion.on("motionstart", function() {
             console.log("Motion start");
             start = new Date();
             });
             
-
     motion.on("motionend", function(){
         console.log("Motion ended");
         end = new Date();    
@@ -92,6 +91,7 @@ board.on("ready", function() {
 
         if(toggle==1){ 
             motioncounter++;
+        
         };
     
         if(sec > 7) {
@@ -99,11 +99,21 @@ board.on("ready", function() {
 
             if(toggle==1){ 
                 longmotioncounter++;
-        
+
+                b.push("long"); 
+                b = checkintruder(b); 
+
+                if(b=="intruder"){ 
+                    intrudercounter++; 
+                    console.log("INTRUDER!")
+                    b=[] ; 
+                }
+                
                 ref.push({
                     motion: motioncounter,  
                     longmotion: longmotioncounter,
                     shortmotion: shortmotioncounter,
+                    intrudermotion: intrudercounter,
             });
             }
             
@@ -112,12 +122,19 @@ board.on("ready", function() {
             console.log("This is a short motion");
 
             if(toggle ==1) { 
-            shortmotioncounter++;
-            ref.push({
 
-                motion: motioncounter,  
-                longmotion: longmotioncounter,
-                shortmotion: shortmotioncounter,
+                b.push("short"); 
+                b = checkintruder(b); 
+
+                
+                shortmotioncounter++;
+                ref.push({
+
+                    motion: motioncounter,  
+                    longmotion: longmotioncounter,
+                    shortmotion: shortmotioncounter,
+                    intrudermotion: intrudercounter,
+
             
         });
             };
@@ -191,9 +208,35 @@ board.on("ready", function() {
         console.log("The read failed: " + errorObject.code);
     });
 
-
-    
-
-
 }); 
 
+//Function to find  the intruder 
+function checkintruder(b) {
+    var a = ["long", "short", "long", "long"] ; 
+    var counter = 0; 
+    while (counter < b.length) {
+
+         //When the array is full, shows that there is an intruder
+        if(a[counter]==b[counter]) { 
+            if (counter == 3 ) {
+                b = []; 
+                return "intruder" ;
+            }
+            counter ++ ; 
+            
+           
+
+        }else{ 
+            //Place the long at the first of the array. 
+            if(b[counter] != "long"){
+            b = []; 
+            return b; 
+            }else {
+                b = []; 
+                b.push("long") ; 
+                return b; 
+            }
+        }
+    }
+    return b;
+};
