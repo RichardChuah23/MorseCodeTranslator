@@ -5,13 +5,13 @@ function Fit3140() {
 
 }
 
-  Fit3140.prototype.initFirebase = function () {
+Fit3140.prototype.initFirebase = function () {
     this.database = firebase.database();
     this.storage = firebase.storage();
-  };
+};
 
 
-  Fit3140.prototype.loadMessages = function () {
+Fit3140.prototype.loadMessages = function () {
     // Reference to the /messages/ database path.
     this.messagesRef = this.database.ref('motionSensorData');
     // Make sure we remove all previous listeners.
@@ -24,11 +24,11 @@ function Fit3140() {
     }.bind(this);
     this.messagesRef.limitToLast(50).on('child_added', setMessage);
     this.messagesRef.limitToLast(50).on('child_changed', setMessage);
-  };
+};
   
 
-  // Saves a new message on the Firebase DB.
-  Fit3140.prototype.saveMessage = function () {
+// Saves a new message on the Firebase DB.
+Fit3140.prototype.saveMessage = function () {
     // Add a new message entry to the Firebasse Database.
     this.messagesRef.update({
       id: '2',
@@ -41,30 +41,24 @@ function Fit3140() {
     }.bind(this)).catch(function (error) {
       console.error('Error writing new message to Firebase Database', error);
     });
-  };
+};
 
-
-
-  Fit3140.prototype.displayMessage = function ( longmotion, motion, shortmotion, intrudermotion){ 
-
+Fit3140.prototype.displayMessage = function ( longmotion, motion, shortmotion, intrudermotion){ 
     document.getElementById('motionlabel').innerHTML = motion;
     document.getElementById('longmotionlabel').innerHTML = longmotion;
     document.getElementById('shortmotionlabel').innerHTML = shortmotion;
     document.getElementById('intrudersmotionlabel').innerHTML = intrudermotion;
-  
-  };
+};
 
-
-
-  // Checks that the Firebase SDK has been correctly setup and configured.
-  Fit3140.prototype.checkSetup = function () {
+// Checks that the Firebase SDK has been correctly setup and configured.
+Fit3140.prototype.checkSetup = function () {
     if (!window.firebase || !(firebase.app instanceof Function) || !window.config) {
       window.alert('You have not configured and imported the Firebase SDK. ' +
         'Make sure you go through the codelab setup instructions.');
     } else if (config.storageBucket === '') {
       window.alert('Your Firebase Storage bucket has not been enabled.');
     }
-  };
+};
 
 
 window.onload = function () {

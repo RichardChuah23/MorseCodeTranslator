@@ -101,7 +101,6 @@
         }
     </style>
 
-    
     <body>
         <div class="header">
             <h1>IoT Control Panel</h1>
@@ -159,76 +158,56 @@
 
         
         <script  type="text/javascript">  
-
-
-
-
-        //Turn Led On off 
-        function LEDFunction(){
-            if(document.getElementById("led").checked){
-                console.log("Push LEDon")
-
-
-            firebase.database().ref("/ledData").update({
-                led: "on",
-                
-            });
-
-            }else{ 
-                firebase.database().ref("/ledData").update({
-                led: "off",
-
+            // Turn Led On off 
+            function LEDFunction() {
+                if(document.getElementById("led").checked){
+                    console.log("Push LEDon")
+                    firebase.database().ref("/ledData").update({
+                        led: "on",
+                    });
+                }else { 
+                    firebase.database().ref("/ledData").update({
+                        led: "off",
+                    });
+                };
+            };
+        
+            // Turn Motion On off
+            function motionCount() {
+                if(document.getElementById("motion").checked){
+                    console.log("Push motion on")
+                    firebase.database().ref("/motionData").update({
+                        motion: "on",
+                    });
+                }else{ 
+                    firebase.database().ref("/motionData").update({
+                        motion: "off",
+                    });
+                };
+            };
+            
+            // Reset button
+            function reset() {
+                firebase.database().ref("/resetData").update({
+                    reset: "true",
                 });
             };
-        };
-        
-        //Turn Motion On off
-        function motionCount(){
-            if(document.getElementById("motion").checked){
-                console.log("Push motion on")
-
-            firebase.database().ref("/motionData").update({
-                motion: "on",
-                
-                });
-
-            }else{ 
-                firebase.database().ref("/motionData").update({
-                motion: "off",
-
-                });
-            };
-        };
-
-        //Reset button
-        function reset() {
-
-            firebase.database().ref("/resetData").update({
-                reset: "true",
-                
-            });
-
-        };
-        
-
-
-
         </script>  
         
         <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+        
         <script>
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyA84aCpSRhPIYCgaTe7unLjcSqhtlYEOfg",
-            authDomain: "assignment-2-d4946.firebaseapp.com",
-            databaseURL: "https://assignment-2-d4946.firebaseio.com",
-            projectId: "assignment-2-d4946",
-            storageBucket: "assignment-2-d4946.appspot.com",
-            messagingSenderId: "401737524134"
-        };
-        firebase.initializeApp(config);
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyA84aCpSRhPIYCgaTe7unLjcSqhtlYEOfg",
+                authDomain: "assignment-2-d4946.firebaseapp.com",
+                databaseURL: "https://assignment-2-d4946.firebaseio.com",
+                projectId: "assignment-2-d4946",
+                storageBucket: "assignment-2-d4946.appspot.com",
+                messagingSenderId: "401737524134"
+            };
+            firebase.initializeApp(config);
         </script>
-
 
         <script src="./firebaseWebApi.js">  </script>
 

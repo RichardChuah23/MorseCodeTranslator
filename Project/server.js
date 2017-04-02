@@ -32,7 +32,6 @@ shortmotioncounter = 0;
 intrudercounter = 0 ; 
 
 /** 
-
 ref.push({
 
         motion: motioncounter,  
@@ -41,13 +40,19 @@ ref.push({
         intrudermotion: intrudercounter,
 
     });
-
+refmotion.update({
+    motion:"off",
+})*/
 
 refmotion.update({
     motion:"off",
 })
 
-*/
+refled.update({
+    led:"off",
+})
+
+
 
 ref.on('child_added', function(snapshot) {
       motioncounter = snapshot.val().motion; 
@@ -56,29 +61,18 @@ ref.on('child_added', function(snapshot) {
       intrudercounter = snapshot.val().intrudermotion; 
 });
 
-
-
-
 refmotion.on("value", function(snapshot) {   //this callback will be invoked with each new object
-
     var key  = snapshot.val().motion;
     toggle = key; 
-    
     }, function (errorObject) {             // if error
     console.log("The read failed: " + errorObject.code);
 });
-
 
 b = []  //array to store the list of motion. to find intruder
 
 refreset.update({
     reset:"false",
 });
-
-
-
-
-
 
 app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {  
@@ -105,7 +99,7 @@ board.on("ready", function() {
             console.log("Motion start");
             start = new Date();
             });
-            
+    
     motion.on("motionend", function(){
         console.log("Motion ended");
         end = new Date();    
@@ -140,115 +134,80 @@ board.on("ready", function() {
                     intrudermotion: intrudercounter,
             });
             }
-            
-            
-        }else {
+        } else {
             console.log("This is a short motion");
 
-            if(toggle ==1) { 
-
+            if(toggle == 1) { 
                 b.push("short"); 
                 b = checkintruder(b); 
-
-                
                 shortmotioncounter++;
                 ref.push({
-
                     motion: motioncounter,  
                     longmotion: longmotioncounter,
                     shortmotion: shortmotioncounter,
                     intrudermotion: intrudercounter,
-
-            
-        });
+                });
             };
-            
         }
     });
 
-
-    //Led On off 
-    
+    // Led On/Off 
     refled.on("value", function(snapshot) {   //this callback will be invoked with each new object
-    
-    
-       var key  = snapshot.val().led;
-
+        var key  = snapshot.val().led;
         if(key == "on") { 
             led.on(); 
         }else{ 
             led.off();
         }; 
-        
-        }, function (errorObject) {             // if error
+    }, function (errorObject) {             // if error
         console.log("The read failed: " + errorObject.code);
     });
 
-    //motion On off 
-    
+    //motion On/Off 
     refmotion.on("value", function(snapshot) {   //this callback will be invoked with each new object
-    
-       var key  = snapshot.val().motion;
-
+        var key  = snapshot.val().motion;
         if(key == "on") { 
             toggle = 1;
             console.log("change toogle to 1");
         }else{
             toggle = 0;
         }; 
-        
-        }, function (errorObject) {             // if error
+    }, function (errorObject) {             // if error
         console.log("The read failed: " + errorObject.code);
     });
 
-
-
-    //Reset clicked 
+    // Reset clicked 
     refreset.on("value", function(snapshot) {   //this callback will be invoked with each new object
-    
         var key  = snapshot.val().reset;
-
         if(key == "true") { 
-            
-        ref.remove();
-
-        ref.push({
-            motion: motioncounter=0,  
-            longmotion: longmotioncounter=0,
-            shortmotion: shortmotioncounter=0,
-            intrudermotion: intrudercounter=0,
-         });
-
-
-
+            ref.remove();
+            ref.push({
+                motion: motioncounter=0,  
+                longmotion: longmotioncounter=0,
+                shortmotion: shortmotioncounter=0,
+                intrudermotion: intrudercounter=0,
+            });
         };
-
-                refreset.update({
-                reset: "false" ,
+        refreset.update({
+            reset: "false" ,
         });
-         
-
-        }, function (errorObject) {             // if error
+    }, function (errorObject) {             // if error
         console.log("The read failed: " + errorObject.code);
     });
-
 }); 
 
-//Function to find  the intruder 
+// Function to find  the intruder 
 function checkintruder(b) {
     var a = ["long", "short", "long", "long"] ; 
     var counter = 0; 
     while (counter < b.length) {
-
-         //When the array is full, shows that there is an intruder
-        if(a[counter]==b[counter]) { 
+        //When the array is full, shows that there is an intruder
+        if(a[counter] == b[counter]) { 
             if (counter == 3 ) {
                 b = []; 
                 return "intruder" ;
             }
             counter ++ ; 
-            
-        
         }else{ 
             //Place the long at the first of the array. 
             if(b[counter] != "long"){

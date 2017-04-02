@@ -37,6 +37,24 @@ Connect LED
 Step 3 
 Plug in USB to computer/laptop
 
+Step 4 
+Open two terminal 
+Create directory to the located file 
+
+Step 5
+In the first terminal, run:
+```sh
+$ firebase serve
+```
+
+In the second terminal, run:
+```sh
+$ node server.js
+```
+
+The server is available at this URL: locahost:5000
+Open a browser and paste this URL. 
+
 ### Installation
 Open Arduino IDE
 Open __file__ -> __Examples__ -> __Firmata__ -> __StanadardFirmata__
