@@ -31,7 +31,23 @@ longmotioncounter = 0;
 shortmotioncounter = 0; 
 intrudercounter = 0 ; 
 
+/** 
 
+ref.push({
+
+        motion: motioncounter,  
+        longmotion: longmotioncounter,
+        shortmotion: shortmotioncounter,
+        intrudermotion: intrudercounter,
+
+    });
+
+
+refmotion.update({
+    motion:"off",
+})
+
+*/
 
 ref.on('child_added', function(snapshot) {
       motioncounter = snapshot.val().motion; 
@@ -40,12 +56,7 @@ ref.on('child_added', function(snapshot) {
       intrudercounter = snapshot.val().intrudermotion; 
 });
 
-refmotion.on('child_added', function(snapshot) {
-      motioncounter = snapshot.val().motion; 
-      longmotioncounter = snapshot.val().longmotion; 
-      shortmotion = snapshot.val().shortmotion; 
-      intrudercounter = snapshot.val().intrudermotion; 
-});
+
 
 
 refmotion.on("value", function(snapshot) {   //this callback will be invoked with each new object
@@ -64,24 +75,9 @@ refreset.update({
     reset:"false",
 });
 
-/** 
-refmotion.update({
-    motion:"off",
-})
 
 
 
-
-
-ref.push({
-
-        motion: motioncounter,  
-        longmotion: longmotioncounter,
-        shortmotion: shortmotioncounter,
-        intrudermotion: intrudercounter,
-
-    });
-    */
 
 
 app.use(express.static(__dirname + '/public'));
@@ -267,3 +263,4 @@ function checkintruder(b) {
     }
     return b;
 };
+ 
