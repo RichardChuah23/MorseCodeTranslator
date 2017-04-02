@@ -40,6 +40,12 @@ ref.on('child_added', function(snapshot) {
       intrudercounter = snapshot.val().intrudermotion; 
 });
 
+refmotion.on('child_added', function(snapshot) {
+      motioncounter = snapshot.val().motion; 
+      longmotioncounter = snapshot.val().longmotion; 
+      shortmotion = snapshot.val().shortmotion; 
+      intrudercounter = snapshot.val().intrudermotion; 
+});
 
 
 refmotion.on("value", function(snapshot) {   //this callback will be invoked with each new object
@@ -54,19 +60,19 @@ refmotion.on("value", function(snapshot) {   //this callback will be invoked wit
 
 b = []  //array to store the list of motion. to find intruder
 
+refreset.update({
+    reset:"false",
+});
 
-
-
+/** 
 refmotion.update({
     motion:"off",
 })
 
-refreset.update({
-    reset:"false",
-})
 
 
-/** 
+
+
 ref.push({
 
         motion: motioncounter,  
@@ -204,28 +210,26 @@ board.on("ready", function() {
     //Reset clicked 
     refreset.on("value", function(snapshot) {   //this callback will be invoked with each new object
     
-       var key  = snapshot.val().reset;
+        var key  = snapshot.val().reset;
 
         if(key == "true") { 
-            reset = 1;
-        
-        
+            
         ref.remove();
 
         ref.push({
-            led:'off',
             motion: motioncounter=0,  
             longmotion: longmotioncounter=0,
             shortmotion: shortmotioncounter=0,
             intrudermotion: intrudercounter=0,
+         });
 
-         })
 
-        refreset.update({
-                reset: "false" ,
-        });
 
         };
+
+                refreset.update({
+                reset: "false" ,
+        });
          
 
         }, function (errorObject) {             // if error
@@ -248,8 +252,7 @@ function checkintruder(b) {
             }
             counter ++ ; 
             
-           
-
+        
         }else{ 
             //Place the long at the first of the array. 
             if(b[counter] != "long"){
